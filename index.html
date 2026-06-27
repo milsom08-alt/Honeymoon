@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Honeymoon · Ireland · Scotland · Netherlands</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; background: #F5F4F0; min-height: 100vh; color: #1a1a1a; }
+
+/* ── HERO ── */
+.hero { background: linear-gradient(160deg, #0D1B2A 0%, #1A3A5C 50%, #2D5016 100%); padding: 40px 24px 32px; text-align: center; }
+.hero-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.2em; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 10px; }
+.hero h1 { font-size: 30px; font-weight: 900; color: white; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 18px; }
+.dest-badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.dest-badge { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 8px 16px; text-align: center; }
+.dest-badge .flag { font-size: 20px; }
+.dest-badge .city { font-size: 13px; font-weight: 700; color: white; margin-top: 2px; }
+.dest-badge .nights { font-size: 11px; color: rgba(255,255,255,0.6); }
+
+/* ── TABS (pure CSS radio pattern) ── */
+.tab-radio { display: none; }
+.tabs { background: white; border-bottom: 1px solid #E0E0E0; display: flex; justify-content: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.tab-label { padding: 12px 14px; font-size: 13px; font-weight: 500; color: #777; cursor: pointer; border-bottom: 3px solid transparent; user-select: none; white-space: nowrap; }
+
+#t-dublin:checked   ~ .tabs label[for="t-dublin"]   { font-weight:700; color:#2D5016; border-bottom:3px solid #2D5016; }
+#t-edin:checked     ~ .tabs label[for="t-edin"]     { font-weight:700; color:#1A2744; border-bottom:3px solid #1A2744; }
+#t-ams:checked      ~ .tabs label[for="t-ams"]      { font-weight:700; color:#5C1A0A; border-bottom:3px solid #5C1A0A; }
+#t-travel:checked   ~ .tabs label[for="t-travel"]   { font-weight:700; color:#444;    border-bottom:3px solid #444; }
+#t-costs:checked    ~ .tabs label[for="t-costs"]    { font-weight:700; color:#1A4731; border-bottom:3px solid #1A4731; }
+#t-packing:checked  ~ .tabs label[for="t-packing"]  { font-weight:700; color:#4A1A6B; border-bottom:3px solid #4A1A6B; }
+
+.tab-panel { display: none; }
+#t-dublin:checked  ~ .content #panel-dublin  { display: block; }
+#t-edin:checked    ~ .content #panel-edin    { display: block; }
+#t-ams:checked     ~ .content #panel-ams     { display: block; }
+#t-travel:checked  ~ .content #panel-travel  { display: block; }
+#t-costs:checked   ~ .content #panel-costs   { display: block; }
+#t-packing:checked ~ .content #panel-packing { display: block; }
+
+/* ── CONTENT ── */
+.content { max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; }
+
+/* ── PRINCIPLE BANNER ── */
+.principle-banner { background: #E8F0FE; border: 1px solid #BDD0F8; border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; color: #1A3A5C; line-height: 1.5; }
+
+/* ── DEST PANEL HEADER (static, not collapsible) ── */
+.dest-banner { border-radius: 16px; padding: 24px 28px; margin-bottom: 16px; }
+.dest-flag { font-size: 26px; margin-bottom: 4px; }
+.dest-city { font-size: 24px; font-weight: 800; color: white; letter-spacing: -0.02em; }
+.dest-meta { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 2px; }
+
+/* ── WEATHER ── */
+.weather-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 12px 16px; margin-top: 14px; }
+.weather-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.75); margin-bottom: 8px; text-transform: uppercase; }
+.weather-stats { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 7px; }
+.weather-stat label { font-size: 10px; opacity: 0.7; display: block; color: white; }
+.weather-stat span { font-size: 14px; font-weight: 600; color: white; }
+.weather-notes { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.5; }
+
+/* ── ACCOMMODATION CARD ── */
+.accom-card { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; }
+.accom-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.accom-title { font-size: 15px; font-weight: 700; color: #1a1a1a; }
+.accom-badge { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+.accom-row { display: flex; gap: 10px; margin-bottom: 6px; align-items: flex-start; }
+.accom-key { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.06em; min-width: 88px; flex-shrink: 0; padding-top: 1px; }
+.accom-val { font-size: 13px; color: #222; line-height: 1.5; }
+.accom-note { background: #FFF8E1; border: 1px solid #FFD54F; border-radius: 8px; padding: 7px 11px; font-size: 12px; color: #5D4037; margin-top: 10px; }
+
+/* ── DAY CARDS ── */
+.day-card { border-radius: 14px; margin-bottom: 12px; overflow: hidden; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.day-card-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.day-date { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+.day-label { font-size: 16px; font-weight: 700; color: #1a1a1a; margin-top: 2px; }
+.day-theme { font-size: 13px; color: #555; margin-top: 2px; font-style: italic; }
+.day-type-badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; color: white; letter-spacing: 0.07em; text-transform: uppercase; white-space: nowrap; }
+.day-body { padding: 12px 16px; }
+
+/* ── TIMELINE ── */
+.timeline-item { display: flex; gap: 12px; margin-bottom: 8px; align-items: flex-start; }
+.ttime { font-size: 12px; font-weight: 600; color: #888; min-width: 92px; padding-top: 1px; flex-shrink: 0; }
+.tnote { font-size: 14px; color: #222; line-height: 1.5; }
+
+/* ── NOTE BOX ── */
+.note-box { background: #FFFDE7; border: 1px solid #FDD835; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+
+/* ── OPTIONS GRID ── */
+.options-grid { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+@media (max-width: 500px) { .options-grid { grid-template-columns: 1fr; } }
+.option-card { border-radius: 10px; overflow: hidden; }
+.option-header { padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.option-title { color: white; font-size: 13px; font-weight: 700; }
+.option-badge { background: rgba(255,255,255,0.25); color: white; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px; white-space: nowrap; }
+.option-body { padding: 10px 12px; }
+.opt-item { display: flex; gap: 10px; margin-bottom: 6px; align-items: flex-start; }
+.otime { font-size: 11px; font-weight: 600; color: #888; min-width: 72px; flex-shrink: 0; }
+.onote { font-size: 13px; color: #222; line-height: 1.4; }
+.option-links { margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px; }
+.option-links-title { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.olink { display: block; font-size: 12px; text-decoration: none; margin-bottom: 4px; font-weight: 600; }
+
+/* ── EXCURSION BOX ── */
+.excursion-box { background: #F8F9FA; border-radius: 8px; padding: 10px 12px; margin-top: 8px; }
+.excursion-title { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 8px; }
+.elink { display: block; font-size: 13px; text-decoration: none; margin-bottom: 6px; font-weight: 600; }
+
+/* ── TRANSIT CARDS ── */
+.transit-card { background: white; border: 1.5px solid #ddd; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.transit-date { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 0.08em; text-transform: uppercase; }
+.transit-label { font-size: 16px; font-weight: 700; color: #1a1a1a; margin: 4px 0 2px; }
+.transit-desc { font-size: 13px; color: #666; margin-bottom: 10px; font-style: italic; }
+
+/* ── BOOKING CHECKLIST (Costs tab) ── */
+.booking-section-title { font-size: 13px; font-weight: 800; color: #888; letter-spacing: 0.1em; text-transform: uppercase; margin: 24px 0 10px 4px; }
+.booking-section-title:first-child { margin-top: 0; }
+
+.booking-item { background: white; border-radius: 12px; margin-bottom: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.06); display: flex; align-items: stretch; }
+.booking-status { width: 10px; flex-shrink: 0; }
+.booking-info { padding: 12px 14px; flex: 1; min-width: 0; }
+.booking-name { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 3px; }
+.booking-item.is-booked .booking-name { color: #1A4731; }
+.booking-meta { font-size: 12px; color: #666; line-height: 1.5; margin-bottom: 4px; }
+.booking-params { font-size: 11px; color: #888; background: #F5F4F0; border-radius: 6px; padding: 5px 8px; margin-top: 6px; line-height: 1.6; }
+.booking-right { padding: 12px 14px 12px 0; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 6px; flex-shrink: 0; }
+.booking-cost { font-size: 14px; font-weight: 700; color: #1a1a1a; white-space: nowrap; }
+.booking-cost.confirmed { color: #1A4731; }
+.booking-cost.estimate { color: #888; }
+.booking-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+.tag-confirmed { background: #D4EEE0; color: #1A4731; }
+.tag-pending { background: #FFF3CD; color: #856404; }
+.tag-tbd { background: #F0F0F0; color: #666; }
+.tag-paid { background: #D4EEE0; color: #1A4731; }
+.tag-reserved { background: #DDEEFF; color: #1A3A5C; }
+
+.booking-item.status-confirmed { border-left: 4px solid #2E7D52; }
+.booking-item.status-reserved { border-left: 4px solid #2196F3; }
+.booking-item.status-pending { border-left: 4px solid #FFC107; }
+.booking-item.status-paid { border-left: 4px solid #2E7D52; }
+
+.cost-total-bar { background: #1A4731; color: white; border-radius: 14px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.cost-total-lbl { font-size: 15px; font-weight: 700; }
+.cost-total-amt { font-size: 17px; font-weight: 800; }
+.cost-disc { font-size: 12px; color: #777; margin-top: 8px; padding: 0 4px; line-height: 1.5; }
+.cost-confirmed-bar { background: #F0FAF4; border: 1.5px solid #B7D9B0; border-radius: 12px; padding: 12px 16px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+.cost-confirmed-lbl { font-size: 13px; color: #1A4731; font-weight: 600; }
+.cost-confirmed-amt { font-size: 15px; font-weight: 800; color: #1A4731; }
+
+/* ── PACKING ── */
+.packing-section { background: white; border: 1.5px solid #ddd; border-radius: 14px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+/* Packing collapsibles use details/summary to avoid cross-panel CSS bleed */
+.packing-section details { }
+.packing-section summary { background: #F8F0FF; padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; list-style: none; }
+.packing-section summary::-webkit-details-marker { display: none; }
+.packing-section-title { font-size: 15px; font-weight: 700; color: #4A1A6B; }
+.summary-arrow { font-size: 15px; color: #7B3FA0; }
+details[open] .summary-arrow { transform: rotate(90deg); display: inline-block; }
+.pack-body { padding: 12px 16px; }
+.pack-note { background: #FFF8E1; border: 1px solid #FFD54F; border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #5D4037; margin-bottom: 12px; line-height: 1.5; }
+.pack-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.pack-item input[type="checkbox"] { width: 18px; height: 18px; margin-top: 1px; flex-shrink: 0; accent-color: #7B3FA0; cursor: pointer; }
+.pack-item label { font-size: 13px; color: #333; line-height: 1.5; cursor: pointer; }
+.pack-item input:checked + label { text-decoration: line-through; color: #aaa; }
+.packing-group-header { font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin: 22px 0 10px 4px; }
+.packing-group-header:first-child { margin-top: 0; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Honeymoon · September 23 – October 7, 2026</div>
+  <h1>Ireland · Scotland · Netherlands</h1>
+  <div class="dest-badges">
+    <div class="dest-badge"><div class="flag">🇮🇪</div><div class="city">Dublin</div><div class="nights">4 nights</div></div>
+    <div class="dest-badge"><div class="flag">🏴󠁧󠁢󠁳󠁣󠁴󠁿</div><div class="city">Edinburgh</div><div class="nights">4 nights</div></div>
+    <div class="dest-badge"><div class="flag">🇳🇱</div><div class="city">Amsterdam</div><div class="nights">4 nights</div></div>
+  </div>
+</div>
+
+<!-- TAB SHELL: radios → tabs → content must be direct siblings -->
+<div class="tab-shell">
+
+  <input type="radio" name="tabs" id="t-dublin"  class="tab-radio" checked>
+  <input type="radio" name="tabs" id="t-edin"    class="tab-radio">
+  <input type="radio" name="tabs" id="t-ams"     class="tab-radio">
+  <input type="radio" name="tabs" id="t-travel"  class="tab-radio">
+  <input type="radio" name="tabs" id="t-costs"   class="tab-radio">
+  <input type="radio" name="tabs" id="t-packing" class="tab-radio">
+
+  <div class="tabs">
+    <label for="t-dublin"  class="tab-label">🇮🇪 Dublin</label>
+    <label for="t-edin"    class="tab-label">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Edinburgh</label>
+    <label for="t-ams"     class="tab-label">🇳🇱 Amsterdam</label>
+    <label for="t-travel"  class="tab-label">✈️ Travel Days</label>
+    <label for="t-costs"   class="tab-label">💰 Bookings</label>
+    <label for="t-packing" class="tab-label">🧳 Packing</label>
+  </div>
+
+  <div class="content">
+
+<!-- ═══════════════════ DUBLIN ═══════════════════ -->
+<div class="tab-panel" id="panel-dublin">
+  <div class="dest-banner" style="background:linear-gradient(135deg,#2D5016,#4A7C29);box-shadow:0 4px 20px rgba(45,80,22,0.4);">
+    <div class="dest-flag">🇮🇪</div>
+    <div class="dest-city">Dublin</div>
+    <div class="dest-meta">Sept 24 – 27 · 4 nights · Ireland</div>
+    <div class="weather-badge">
+      <div class="weather-title">🌦️ Weather Averages</div>
+      <div class="weather-stats">
+        <div class="weather-stat"><label>HIGH</label><span>61°F / 16°C</span></div>
+        <div class="weather-stat"><label>LOW</label><span>51°F / 11°C</span></div>
+        <div class="weather-stat"><label>RAIN</label><span>~9 rainy days</span></div>
+      </div>
+      <div class="weather-notes">Pack layers & a waterproof layer. Mild but breezy — expect some drizzle.</div>
+    </div>
+  </div>
+
+  <div class="accom-card" style="border:1.5px solid #B7D9B0;">
+    <div class="accom-header">
+      <div class="accom-title">🏠 Airbnb — The Schooner, Arran Quay</div>
+      <span class="accom-badge" style="background:#D4EEE0;color:#1A4731;">✓ Booked · $896.75</span>
+    </div>
+    <div class="accom-row"><span class="accom-key">Address</span><span class="accom-val">Apartment 7, The Schooner, Arran Quay, Dublin, D07 R924, Ireland</span></div>
+    <div class="accom-row"><span class="accom-key">Check-in</span><span class="accom-val">Sept 24 — after 2:00 PM</span></div>
+    <div class="accom-row"><span class="accom-key">Check-out</span><span class="accom-val">Sept 28 — before 11:00 AM</span></div>
+    <div class="accom-note">⚠️ Free cancellation before September 23 — confirm or cancel before then.</div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #F9A825;">
+    <div class="day-card-header" style="background:#FFF8E1;">
+      <div><div class="day-date" style="color:#F9A825;">Thursday, Sept 24</div><div class="day-label">Arrival Day</div><div class="day-theme">Recover + Ease Into Europe</div></div>
+      <span class="day-type-badge" style="background:#F9A825;">Arrival</span>
+    </div>
+    <div class="day-body">
+      <div class="timeline-item"><span class="ttime">~10:00 AM</span><span class="tnote">Land at Dublin Airport</span></div>
+      <div class="timeline-item"><span class="ttime">~11:00 AM</span><span class="tnote">Immigration, bags, transit into city</span></div>
+      <div class="timeline-item"><span class="ttime">~12:00 PM</span><span class="tnote">Drop bags at Airbnb (check-in not until 2 PM)</span></div>
+      <div class="timeline-item"><span class="ttime">12:00–2:00 PM</span><span class="tnote">Grab lunch nearby — Arran Quay is right on the River Liffey</span></div>
+      <div class="timeline-item"><span class="ttime">2:00 PM</span><span class="tnote">Official check-in, Apartment 7 The Schooner</span></div>
+      <div class="timeline-item"><span class="ttime">2:00–6:00 PM</span><span class="tnote">Light walk: St Stephen's Green + Temple Bar</span></div>
+      <div class="timeline-item"><span class="ttime">Evening</span><span class="tnote">Relaxed dinner, early sleep — assume jet lag</span></div>
+    </div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #2E4A8C;">
+    <div class="day-card-header" style="background:#F3F8FF;">
+      <div><div class="day-date" style="color:#2E4A8C;">Friday, Sept 25</div><div class="day-label">Dublin City Day</div><div class="day-theme">History + Drinks + Atmosphere</div></div>
+      <span class="day-type-badge" style="background:#2E4A8C;">Explore</span>
+    </div>
+    <div class="day-body">
+      <div class="timeline-item"><span class="ttime">9:00 AM</span><span class="tnote">Leave Airbnb</span></div>
+      <div class="timeline-item"><span class="ttime">9:30–12:00</span><span class="tnote">Trinity College area + city wandering</span></div>
+      <div class="timeline-item"><span class="ttime">1:45 PM</span><span class="tnote">✓ Dublin Jameson Distillery &amp; Guinness Storehouse Guided Tour — 2 Adults · Ref: 1413583145</span></div>
+      <div class="timeline-item"><span class="ttime">6:30 PM+</span><span class="tnote">Dinner → pubs → live music</span></div>
+      <div class="excursion-box">
+        <div class="excursion-title">🔗 Book Excursions</div>
+        <a class="elink" style="color:#2D5016;" href="https://www.tiqets.com/en/dublin-attractions-c68616/tickets-for-guinness-storehouse-experience-p1053342/" target="_blank">→ Guinness Storehouse Tickets</a>
+        <a class="elink" style="color:#2D5016;" href="https://www.viator.com/Dublin-attractions/Guinness-Storehouse/d503-a670" target="_blank">→ Guinness + Jameson Combo Tour</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #2D5016;">
+    <div class="day-card-header" style="background:#F0FFF4;">
+      <div><div class="day-date" style="color:#2D5016;">Saturday, Sept 26</div><div class="day-label">Cliffs of Moher Day Trip</div><div class="day-theme">Bucket list — book soon</div></div>
+      <span class="day-type-badge" style="background:#2D5016;">Adventure</span>
+    </div>
+    <div class="day-body">
+      <div class="timeline-item"><span class="ttime">7:00 AM</span><span class="tnote">Leave Airbnb</span></div>
+      <div class="timeline-item"><span class="ttime">~3–4 hrs</span><span class="tnote">Coach ride west through County Clare</span></div>
+      <div class="timeline-item"><span class="ttime">Afternoon</span><span class="tnote">Cliffs of Moher + Doolin Village lunch stop</span></div>
+      <div class="timeline-item"><span class="ttime">7–9 PM</span><span class="tnote">Return to Dublin</span></div>
+      <div class="excursion-box">
+        <div class="excursion-title">🔗 Book This</div>
+        <a class="elink" style="color:#2D5016;" href="https://www.viator.com/tours/Dublin/Cliffs-of-Moher-and-Doolin-Village-from-Dublin/d503-3703P21" target="_blank">→ Cliffs of Moher Day Tour (Viator)</a>
+        <a class="elink" style="color:#2D5016;" href="https://www.getyourguide.com/dublin-l31/from-dublin-cliffs-of-moher-burren-galway-city-day-tour-t91047/" target="_blank">→ Cliffs, Burren &amp; Galway (GetYourGuide)</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #7B1FA2;">
+    <div class="day-card-header" style="background:#FDF5FF;">
+      <div><div class="day-date" style="color:#7B1FA2;">Sunday, Sept 27</div><div class="day-label">Flex Day</div><div class="day-theme">Slow Honeymoon Morning</div></div>
+      <span class="day-type-badge" style="background:#7B1FA2;">Free Day</span>
+    </div>
+    <div class="day-body">
+      <div class="timeline-item"><span class="ttime">Morning</span><span class="tnote">Sleep in — no alarm</span></div>
+      <div class="timeline-item"><span class="ttime">Day</span><span class="tnote">Coffee shops, shopping, museums, or neighborhood walks</span></div>
+      <div class="timeline-item"><span class="ttime">Evening</span><span class="tnote">Dinner at leisure — check out before 11 AM tomorrow</span></div>
+    </div>
+  </div>
+</div><!-- end dublin -->
+
+<!-- ═══════════════════ EDINBURGH ═══════════════════ -->
+<div class="tab-panel" id="panel-edin">
+  <div class="dest-banner" style="background:linear-gradient(135deg,#1A2744,#2E4A8C);box-shadow:0 4px 20px rgba(26,39,68,0.4);">
+    <div class="dest-flag">🏴󠁧󠁢󠁳󠁣󠁴󠁿</div>
+    <div class="dest-city">Edinburgh</div>
+    <div class="dest-meta">Sept 28 – Oct 1 · 4 nights · Scotland</div>
+    <div class="weather-badge">
+      <div class="weather-title">🌧️ Weather Averages</div>
+      <div class="weather-stats">
+        <div class="weather-stat"><label>HIGH</label><span>58–63°F / 14–17°C</span></div>
+        <div class="weather-stat"><label>LOW</label><span>48–50°F / 9–10°C</span></div>
+        <div class="weather-stat"><label>RAIN</label><span>~17 rainy days</span></div>
+      </div>
+      <div class="weather-notes">Layering essential. Beautiful autumn colours, fewer crowds. Proper rain jacket a must.</div>
+    </div>
+  </div>
+
+  <div class="accom-card" style="border:1.5px solid #ddd;">
+    <div class="accom-header">
+      <div class="accom-title">🏨 Accommodation — TBD</div>
+      <span class="accom-badge" style="background:#FFF3CD;color:#856404;">Not Yet Booked</span>
+    </div>
+    <div class="accom-row"><span class="accom-key">Check-in</span><span class="accom-val">Sept 28 (arriving ~12:55 PM — bag drop if needed)</span></div>
+    <div class="accom-row"><span class="accom-key">Check-out</span><span class="accom-val">Oct 2 — flight is 1:10 PM, leave hotel ~11:00 AM</span></div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #C0392B;">
+    <div class="day-card-header" style="background:#FFF3F0;">
+      <div><div class="day-date" style="color:#C0392B;">Monday, Sept 28</div><div class="day-label">Travel + Arrival</div><div class="day-theme">Dublin → Edinburgh</div></div>
+      <span class="day-type-badge" style="background:#C0392B;">Travel Day</span>
+    </div>
+    <div class="day-body">
+      <div class="timeline-item"><span class="ttime">By 11:00 AM</span><span class="tnote">Check out Dublin Airbnb</span></div>
+      <div class="timeline-item"><span class="ttime">~9:30 AM</span><span class="tnote">Leave for Dublin Airport</span></div>
+      <div class="timeline-item"><span class="ttime">11:40 AM</span><span class="tnote">✈ Depart DUB · Aer Lingus EI3254</span></div>
+      <div class="timeline-item"><span class="ttime">12:55 PM</span><span class="tnote">Land Edinburgh (EDI)</span></div>
+      <div class="timeline-item"><span class="ttime">~2:00 PM</span><span class="tnote">Hotel check-in / bag drop</span></div>
+      <div class="timeline-item"><span class="ttime">Afternoon</span><span class="tnote">Royal Mile wander + Old Town explore</span></div>
+      <div class="timeline-item"><span class="ttime">6:30 PM</span><span class="tnote">Dinner + evening walk</span></div>
+    </div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #2E4A8C;">
+    <div class="day-card-header" style="background:#F3F8FF;">
+      <div><div class="day-date" style="color:#2E4A8C;">Tuesday, Sept 29</div><div class="day-label">Historic Edinburgh</div><div class="day-theme">Castles + Villages</div></div>
+      <span class="day-type-badge" style="background:#2E4A8C;">Explore</span>
+    </div>
+    <div class="day-body">
+      <div class="timeline-item"><span class="ttime">9:00 AM</span><span class="tnote">Leave hotel</span></div>
+      <div class="timeline-item"><span class="ttime">9:30–12:00</span><span class="tnote">Edinburgh Castle</span></div>
+      <div class="timeline-item"><span class="ttime">1:00 PM</span><span class="tnote">Lunch</span></div>
+      <div class="timeline-item"><span class="ttime">2:00–5:00 PM</span><span class="tnote">Dean Village wander</span></div>
+      <div class="timeline-item"><span class="ttime">Evening</span><span class="tnote">Pubs + drinks</span></div>
+      <div class="excursion-box">
+        <div class="excursion-title">🔗 Book Excursions</div>
+        <a class="elink" style="color:#1A2744;" href="https://www.getyourguide.com/edinburgh-l44/edinburgh-castle-skip-the-line-guided-walking-tour-t407882/" target="_blank">→ Edinburgh Castle Guided Tour (GetYourGuide)</a>
+        <a class="elink" style="color:#1A2744;" href="https://www.getyourguide.com/edinburgh-l44/edinburgh-castle-royal-mile-walking-tour-ticket-included-t796079/" target="_blank">→ Edinburgh Castle + Royal Mile Walking Tour</a>
+        <a class="elink" style="color:#1A2744;" href="https://www.getyourguide.com/edinburgh-l44/edinburgh-castle-tickets-tour-scottish-guide-in-a-kilt-t1003028/" target="_blank">→ Kilted Guide Tour (guaranteed Scottish guide)</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #2D5016;">
+    <div class="day-card-header" style="background:#F0FFF4;">
+      <div><div class="day-date" style="color:#2D5016;">Wednesday, Sept 30</div><div class="day-label">John Muir Coastal Bike Day</div><div class="day-theme">Adventure Day</div></div>
+      <span class="day-type-badge" style="background:#2D5016;">Adventure</span>
+    </div>
+    <div class="day-body">
+      <div class="note-box">📋 ~18–22 miles round trip. Allow 4–5 hours total including stops.</div>
+      <div class="timeline-item"><span class="ttime">8:30 AM</span><span class="tnote">Walk to bike rental</span></div>
+      <div class="timeline-item"><span class="ttime">9:00–9:30 AM</span><span class="tnote">Pick up bikes (hybrid + helmet + phone mount)</span></div>
+      <div class="timeline-item"><span class="ttime">10:00 AM</span><span class="tnote">Ride: Canonmills → Leith → Seafield → Portobello Beach</span></div>
+      <div class="timeline-item"><span class="ttime">11:00 AM</span><span class="tnote">Coffee stop at Portobello Beach</span></div>
+      <div class="timeline-item"><span class="ttime">11:30 AM–1 PM</span><span class="tnote">Continue east on John Muir Way → Musselburgh</span></div>
+      <div class="timeline-item"><span class="ttime">1:00–2:00 PM</span><span class="tnote">Lunch in Musselburgh</span></div>
+      <div class="timeline-item"><span class="ttime">2:00–3:00 PM</span><span class="tnote">Ride back</span></div>
+      <div class="timeline-item"><span class="ttime">Evening</span><span class="tnote">Dinner + drinks</span></div>
+    </div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #7B1FA2;">
+    <div class="day-card-header" style="background:#FDF5FF;">
+      <div><div class="day-date" style="color:#7B1FA2;">Thursday, Oct 1</div><div class="day-label">Flex Day</div><div class="day-theme">No Agenda</div></div>
+      <span class="day-type-badge" style="background:#7B1FA2;">Free Day</span>
+    </div>
+    <div class="day-body">
+      <div class="timeline-item"><span class="ttime">Morning</span><span class="tnote">Sleep in</span></div>
+      <div class="timeline-item"><span class="ttime">Day</span><span class="tnote">Coffee shops, shopping, or wandering</span></div>
+      <div class="timeline-item"><span class="ttime">Optional</span><span class="tnote">Late-night: The Hive (Edinburgh's legendary late-night spot)</span></div>
+    </div>
+  </div>
+</div><!-- end edinburgh -->
+
+<!-- ═══════════════════ AMSTERDAM ═══════════════════ -->
+<div class="tab-panel" id="panel-ams">
+  <div class="dest-banner" style="background:linear-gradient(135deg,#5C1A0A,#C0392B);box-shadow:0 4px 20px rgba(92,26,10,0.4);">
+    <div class="dest-flag">🇳🇱</div>
+    <div class="dest-city">Amsterdam</div>
+    <div class="dest-meta">Oct 2 – 5 · 4 nights · Netherlands</div>
+    <div class="weather-badge">
+      <div class="weather-title">🍂 Weather Averages</div>
+      <div class="weather-stats">
+        <div class="weather-stat"><label>HIGH</label><span>57–61°F / 14–16°C</span></div>
+        <div class="weather-stat"><label>LOW</label><span>46–48°F / 8–9°C</span></div>
+        <div class="weather-stat"><label>RAIN</label><span>~16–17 rainy days</span></div>
+      </div>
+      <div class="weather-notes">Crisp autumn air, beautiful canal colours. Rain jacket a must — showers are usually light.</div>
+    </div>
+  </div>
+
+  <div class="accom-card" style="border:1.5px solid #ddd;">
+    <div class="accom-header">
+      <div class="accom-title">🏨 Accommodation — TBD</div>
+      <span class="accom-badge" style="background:#FFF3CD;color:#856404;">Not Yet Booked</span>
+    </div>
+    <div class="accom-row"><span class="accom-key">Check-in</span><span class="accom-val">Oct 2 (arriving ~11:30 AM)</span></div>
+    <div class="accom-row"><span class="accom-key">Check-out</span><span class="accom-val">Oct 6 — leave by ~4:00 PM for airport</span></div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #C0392B;">
+    <div class="day-card-header" style="background:#FFF3F0;">
+      <div><div class="day-date" style="color:#C0392B;">Friday, Oct 2</div><div class="day-label">Travel + Arrival</div><div class="day-theme">Edinburgh → Amsterdam</div></div>
+      <span class="day-type-badge" style="background:#C0392B;">Travel Day</span>
+    </div>
+    <div class="day-body">
+      <div class="timeline-item"><span class="ttime">~11:00 AM</span><span class="tnote">Leave Edinburgh hotel</span></div>
+      <div class="timeline-item"><span class="ttime">~12:00 PM</span><span class="tnote">Arrive Edinburgh Airport (EDI)</span></div>
+      <div class="timeline-item"><span class="ttime">1:10 PM</span><span class="tnote">✈ Depart EDI · KLM KL0928</span></div>
+      <div class="timeline-item"><span class="ttime">3:40 PM</span><span class="tnote">Arrive Amsterdam Schiphol (AMS)</span></div>
+      <div class="timeline-item"><span class="ttime">1:00 PM</span><span class="tnote">Hotel check-in</span></div>
+      <div class="timeline-item"><span class="ttime">Evening</span><span class="tnote">Canal walks + sunset canal cruise</span></div>
+      <div class="excursion-box">
+        <div class="excursion-title">🔗 Book Excursions</div>
+        <a class="elink" style="color:#5C1A0A;" href="https://www.viator.com/tours/Amsterdam/Amsterdam-Experience-Cruise/d525-151884P2" target="_blank">→ Amsterdam Sunset Canal Cruise (snacks + drinks)</a>
+        <a class="elink" style="color:#5C1A0A;" href="https://www.viator.com/tours/Amsterdam/One-hour-canal-cruise-and-all-drinks-included-The-best-way-to-explore-Amsterdam/d525-56080P1" target="_blank">→ Canal Cruise with Unlimited Drinks</a>
+        <a class="elink" style="color:#5C1A0A;" href="https://www.getyourguide.com/amsterdam-l36/sunset-tours-tc306/" target="_blank">→ Evening Canal Cruise (GetYourGuide)</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #2D5016;">
+    <div class="day-card-header" style="background:#F0FFF4;">
+      <div><div class="day-date" style="color:#2D5016;">Saturday, Oct 3</div><div class="day-label">Amsterdam Bike Day</div><div class="day-theme">Canal Rings + Neighbourhoods</div></div>
+      <span class="day-type-badge" style="background:#2D5016;">Adventure</span>
+    </div>
+    <div class="day-body">
+      <div class="timeline-item"><span class="ttime">9:30 AM</span><span class="tnote">Bike rental pickup</span></div>
+      <div class="timeline-item"><span class="ttime">Morning</span><span class="tnote">Route: Vondelpark → Jordaan → Nine Streets</span></div>
+      <div class="timeline-item"><span class="ttime">1:00 PM</span><span class="tnote">Lunch</span></div>
+      <div class="timeline-item"><span class="ttime">Evening</span><span class="tnote">Canal-side drinks</span></div>
+    </div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #7B1FA2;">
+    <div class="day-card-header" style="background:#FDF5FF;">
+      <div><div class="day-date" style="color:#7B1FA2;">Sunday, Oct 4</div><div class="day-label">Free Day — Pick One</div><div class="day-theme">Amsterdam at Your Pace</div></div>
+      <span class="day-type-badge" style="background:#7B1FA2;">Free Day</span>
+    </div>
+    <div class="day-body">
+      <div class="timeline-item"><span class="ttime">Morning</span><span class="tnote">Sleep in, coffee, no agenda</span></div>
+      <div class="excursion-box">
+        <div class="excursion-title">🎯 Ideas for the Day — Pick One</div>
+        <a class="elink" style="color:#5C1A0A;" href="https://www.getyourguide.com/amsterdam-l36/rijksmuseum-skip-the-line-tickets-t68059/" target="_blank">→ Rijksmuseum — Dutch masters, Rembrandt, Vermeer (book ahead)</a>
+        <a class="elink" style="color:#5C1A0A;" href="https://www.getyourguide.com/amsterdam-l36/anne-frank-house-guided-tour-t44944/" target="_blank">→ Anne Frank House — book well in advance, very limited slots</a>
+        <a class="elink" style="color:#5C1A0A;" href="https://www.getyourguide.com/amsterdam-l36/heineken-experience-entry-ticket-t68139/" target="_blank">→ Heineken Experience — fun brewery tour, ~1.5 hrs</a>
+        <a class="elink" style="color:#5C1A0A;" href="https://www.getyourguide.com/amsterdam-l36/day-trip-to-zaanse-schans-windmills-marken-and-volendam-t23338/" target="_blank">→ Zaanse Schans — windmills + cheese + countryside day trip</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" style="border:1.5px solid #7B1FA2;">
+    <div class="day-card-header" style="background:#FDF5FF;">
+      <div><div class="day-date" style="color:#7B1FA2;">Monday, Oct 5</div><div class="day-label">Final Full Europe Day</div><div class="day-theme">Favourite Things Day</div></div>
+      <span class="day-type-badge" style="background:#7B1FA2;">Free Day</span>
+    </div>
+    <div class="day-body">
+      <div class="timeline-item"><span class="ttime">Morning</span><span class="tnote">Sleep in</span></div>
+      <div class="timeline-item"><span class="ttime">Day</span><span class="tnote">Return to favourite café, neighbourhood, or shop</span></div>
+      <div class="timeline-item"><span class="ttime">Evening</span><span class="tnote">Celebratory dinner — make it a good one 🥂</span></div>
+    </div>
+  </div>
+</div><!-- end amsterdam -->
+
+<!-- ═══════════════════ TRAVEL DAYS ═══════════════════ -->
+<div class="tab-panel" id="panel-travel">
+  <div class="principle-banner">Travel days stay light. One task at a time — no packed schedules on move days.</div>
+
+  <div class="transit-card">
+    <div class="transit-date">Wednesday, Sept 23</div>
+    <div class="transit-label">✈️ Outbound — Kalamazoo → ORD → Dublin</div>
+    <div class="transit-desc">via Detroit (DTW) · Overnight transatlantic</div>
+    <div class="timeline-item"><span class="ttime">~2:30 PM</span><span class="tnote">Leave Griffin's — 3418 N Jansen, Kalamazoo · Cars parked here</span></div>
+    <div class="timeline-item"><span class="ttime">~3:00–3:15 PM</span><span class="tnote">Arrive O'Hare (ORD) — ~30 min drive from Griffin's</span></div>
+    <div class="timeline-item"><span class="ttime">~3:15–4:45 PM</span><span class="tnote">Check in, security, get to gate</span></div>
+    <div class="timeline-item"><span class="ttime">5:00 PM</span><span class="tnote">✈ Depart Chicago O'Hare (ORD)</span></div>
+    <div class="timeline-item"><span class="ttime">Layover</span><span class="tnote">Detroit (DTW)</span></div>
+    <div class="timeline-item"><span class="ttime">Overnight</span><span class="tnote">Transatlantic — settle in, sleep if you can</span></div>
+  </div>
+
+  <div class="transit-card">
+    <div class="transit-date">Monday, Sept 28</div>
+    <div class="transit-label">✈️ Dublin → Edinburgh · Aer Lingus EI3254</div>
+    <div class="transit-desc">Ref: 2ICYRN · 1h 15m · <a href="https://www.aerlingus.com/en-ie/my-trip/" target="_blank" style="color:#2E4A8C;font-weight:600;">Manage on Aer Lingus →</a></div>
+    <div class="timeline-item"><span class="ttime">By 11:00 AM</span><span class="tnote">Check out Dublin Airbnb</span></div>
+    <div class="timeline-item"><span class="ttime">~9:30 AM</span><span class="tnote">Leave for Dublin Airport</span></div>
+    <div class="timeline-item"><span class="ttime">11:40 AM</span><span class="tnote">✈ Depart DUB · Aer Lingus EI3254</span></div>
+    <div class="timeline-item"><span class="ttime">12:55 PM</span><span class="tnote">Arrive EDI · Edinburgh Airport</span></div>
+  </div>
+
+  <div class="transit-card">
+    <div class="transit-date">Friday, Oct 2</div>
+    <div class="transit-label">✈️ Edinburgh → Amsterdam · KLM KL0928</div>
+    <div class="transit-desc">2h 30m · Seats 17E &amp; 17F · <a href="https://www.klm.com/en/my-trip" target="_blank" style="color:#2E4A8C;font-weight:600;">Manage on KLM My Trip →</a></div>
+    <div class="timeline-item"><span class="ttime">~11:00 AM</span><span class="tnote">Leave Edinburgh hotel</span></div>
+    <div class="timeline-item"><span class="ttime">~12:00 PM</span><span class="tnote">Arrive Edinburgh Airport (EDI)</span></div>
+    <div class="timeline-item"><span class="ttime">1:10 PM</span><span class="tnote">✈ Depart EDI · KLM KL0928</span></div>
+    <div class="timeline-item"><span class="ttime">3:40 PM</span><span class="tnote">Arrive AMS · Amsterdam Schiphol</span></div>
+  </div>
+
+  <div class="transit-card">
+    <div class="transit-date">Tuesday, Oct 6</div>
+    <div class="transit-label">✈️ Amsterdam → Dublin (overnight layover)</div>
+    <div class="transit-desc">~1.5 hour flight · Depart ~7 PM · Arrive ~8:30–9 PM</div>
+    <div class="note-box" style="margin-top:8px;">📋 Book parameters: depart AMS no earlier than 6:30 PM (leave hotel ~4 PM). Arrive DUB by 9:30 PM to reach airport hotel at a reasonable hour.</div>
+    <div class="timeline-item"><span class="ttime">4:00 PM</span><span class="tnote">Leave Amsterdam hotel</span></div>
+    <div class="timeline-item"><span class="ttime">5:00 PM</span><span class="tnote">Arrive Amsterdam Airport (AMS)</span></div>
+    <div class="timeline-item"><span class="ttime">~7:00 PM</span><span class="tnote">Target departure</span></div>
+    <div class="timeline-item"><span class="ttime">~8:30–9 PM</span><span class="tnote">Arrive Dublin</span></div>
+    <div class="timeline-item"><span class="ttime">~9:30 PM</span><span class="tnote">Check into Clayton Hotel Dublin Airport · Ref: 303227175</span></div>
+  </div>
+
+  <div class="transit-card">
+    <div class="transit-date">Wednesday, Oct 7</div>
+    <div class="transit-label">✈️ Dublin → Home (ORD)</div>
+    <div class="transit-desc">Depart ~10 AM · Arrive home Chicago</div>
+    <div class="timeline-item"><span class="ttime">7:00 AM</span><span class="tnote">Wake up at airport hotel</span></div>
+    <div class="timeline-item"><span class="ttime">7:45–8:00 AM</span><span class="tnote">Head to terminal</span></div>
+    <div class="timeline-item"><span class="ttime">10:00 AM</span><span class="tnote">✈ Flight home to ORD</span></div>
+  </div>
+</div><!-- end travel -->
+
+<!-- ═══════════════════ BOOKINGS / COSTS ═══════════════════ -->
+<div class="tab-panel" id="panel-costs">
+
+  <div class="booking-section-title">✈️ Flights</div>
+
+  <div class="booking-item status-confirmed" id="bk-ord-dub">
+        <div class="booking-info">
+      <div class="booking-name">ORD → Dublin (round trip, 2 people)</div>
+      <div class="booking-meta">Sept 23 depart · Oct 7 return · via DTW outbound</div>
+      <div class="booking-params">📋 $116 cash + 120,000 SkyMiles redeemed · Depart ORD ~5 PM Sept 23 · Return from DUB ~10 AM Oct 7</div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost confirmed">$116 + 120k miles</span>
+      <span class="booking-tag tag-confirmed">✓ Booked</span>
+    </div>
+  </div>
+
+  <div class="booking-item status-confirmed" id="bk-dub-edi">
+        <div class="booking-info">
+      <div class="booking-name">Dublin → Edinburgh · Aer Lingus EI3254</div>
+      <div class="booking-meta">Mon Sept 28 · Departs 11:40 AM · Arrives 12:55 PM · Ref: 2ICYRN · 2 Adults</div>
+      <div class="booking-params">📋 <a href="https://www.aerlingus.com/en-ie/my-trip/" target="_blank" style="color:#1A4731;font-weight:600;">Manage → aerlingus.com/my-trip</a></div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost confirmed">$229.81 <span style="font-size:11px;font-weight:500;color:#666;">(€200.50)</span></span>
+      <span class="booking-tag tag-confirmed">✓ Booked</span>
+    </div>
+  </div>
+
+  <div class="booking-item status-confirmed" id="bk-edi-ams">
+        <div class="booking-info">
+      <div class="booking-name">Edinburgh → Amsterdam · KLM KL0928</div>
+      <div class="booking-meta">Fri Oct 2 · Departs 1:10 PM · Arrives 3:40 PM · Seats 17E &amp; 17F · 2 Adults</div>
+      <div class="booking-params">📋 GBP 273.24 · Paid via Amex · <a href="https://www.klm.com/en/my-trip" target="_blank" style="color:#1A4731;font-weight:600;">Manage → klm.com/my-trip</a></div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost confirmed">$362.55</span>
+      <span class="booking-tag tag-confirmed">✓ Booked</span>
+    </div>
+  </div>
+
+  <div class="booking-item status-pending" id="bk-ams-dub">
+        <div class="booking-info">
+      <div class="booking-name">Amsterdam → Dublin (2 people)</div>
+      <div class="booking-meta">Tuesday, Oct 6 · overnight layover before home flight</div>
+      <div class="booking-params">📋 Depart AMS no earlier than 6:30 PM · Arrive DUB by 9:30 PM · ~1.5 hr flight · Ryanair, Aer Lingus</div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost estimate">Incl. in ORD RT</span>
+      <span class="booking-tag tag-tbd">Check RT</span>
+    </div>
+  </div>
+
+  <div class="booking-section-title">🏨 Accommodation</div>
+
+  <div class="booking-item status-confirmed" id="bk-dublin-accom">
+        <div class="booking-info">
+      <div class="booking-name">Dublin — The Schooner, Apt 7, Arran Quay</div>
+      <div class="booking-meta">Sept 24 (after 2 PM) → Sept 28 (before 11 AM) · 4 nights · Airbnb</div>
+      <div class="booking-params">📋 Free cancellation before Sept 23 · D07 R924</div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost confirmed">$896.75</span>
+      <span class="booking-tag tag-confirmed">✓ Confirmed</span>
+    </div>
+  </div>
+
+  <div class="booking-item status-pending" id="bk-edin-accom">
+        <div class="booking-info">
+      <div class="booking-name">Edinburgh — Accommodation</div>
+      <div class="booking-meta">Sept 28 → Oct 2 · 4 nights</div>
+      <div class="booking-params">📋 Must allow early bag drop (arriving ~12:55 PM Sept 28) · Leaving ~11 AM Oct 2 (1:10 PM flight)</div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost estimate">$500–$1,000</span>
+      <span class="booking-tag tag-pending">To Book</span>
+    </div>
+  </div>
+
+  <div class="booking-item status-pending" id="bk-ams-accom">
+        <div class="booking-info">
+      <div class="booking-name">Amsterdam — Accommodation</div>
+      <div class="booking-meta">Oct 2 → Oct 6 · 4 nights</div>
+      <div class="booking-params">📋 Arriving ~11:30 AM Oct 2 · Leaving ~4 PM Oct 6 for airport</div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost estimate">$700–$1,400</span>
+      <span class="booking-tag tag-pending">To Book</span>
+    </div>
+  </div>
+
+  <div class="booking-item status-confirmed" id="bk-dub-airport">
+        <div class="booking-info">
+      <div class="booking-name">Clayton Hotel Dublin Airport</div>
+      <div class="booking-meta">Tue Oct 6 check-in 2 PM → Wed Oct 7 early AM · Deluxe Double · Ref: 303227175 · 2 Adults</div>
+      <div class="booking-params">📋 €143.28 · No parking needed (cars in Kalamazoo) · Cancel by 2 PM Mon Oct 5 · <a href="https://www.claytonhotels.com/manage-booking/" target="_blank" style="color:#1A4731;font-weight:600;">Manage → claytonhotels.com</a></div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost confirmed">$164.20</span>
+      <span class="booking-tag tag-confirmed">✓ Booked</span>
+    </div>
+  </div>
+
+  <div class="booking-section-title">🎟️ Excursions</div>
+
+  <div class="booking-item status-reserved" id="bk-guinness">
+        <div class="booking-info">
+      <div class="booking-name">Dublin Jameson Distillery &amp; Guinness Storehouse Guided Tour</div>
+      <div class="booking-meta">Friday, Sept 25 · 1:45 PM · 2 Adults · Ref: 1413583145</div>
+      <div class="booking-params">📋 Auto-payment $322.96 due Sept 23, 2026 · Can pay now if preferred · $16.15 rewards earned</div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost confirmed">$322.96</span>
+      <span class="booking-tag tag-reserved">⏳ Reserved</span>
+    </div>
+  </div>
+
+  <div class="booking-item status-pending" id="bk-cliffs">
+        <div class="booking-info">
+      <div class="booking-name">Cliffs of Moher Day Tour — Dublin</div>
+      <div class="booking-meta">Saturday, Sept 26 (if choosing Option A)</div>
+      <div class="booking-params">📋 Coach tours depart ~7–8 AM. Book well in advance — popular Sept date.</div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost estimate">$100–$160</span>
+      <span class="booking-tag tag-pending">To Book</span>
+    </div>
+  </div>
+
+  <div class="booking-item status-pending" id="bk-castle">
+        <div class="booking-info">
+      <div class="booking-name">Edinburgh Castle Guided Tour</div>
+      <div class="booking-meta">Tuesday, Sept 29 · 9:30 AM entry target</div>
+      <div class="booking-params">📋 Book timed skip-the-line entry. First slot fills fast — aim for 9:30 AM.</div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost estimate">$70–$120</span>
+      <span class="booking-tag tag-pending">To Book</span>
+    </div>
+  </div>
+
+  <div class="booking-item status-pending" id="bk-bikes-edi">
+        <div class="booking-info">
+      <div class="booking-name">Bike Rental — Edinburgh</div>
+      <div class="booking-meta">Wednesday, Sept 30 · Pickup 9:00–9:30 AM</div>
+      <div class="booking-params">📋 Request hybrid bikes + helmets + phone mounts. Walk-in usually fine but call ahead.</div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost estimate">$30–$60</span>
+      <span class="booking-tag tag-pending">To Book</span>
+    </div>
+  </div>
+
+  <div class="booking-item status-pending" id="bk-canal">
+        <div class="booking-info">
+      <div class="booking-name">Amsterdam Canal Cruise</div>
+      <div class="booking-meta">Friday, Oct 2 · Evening (arrival day)</div>
+      <div class="booking-params">📋 Sunset cruises fill quickly in Oct. Book a 6–8 PM slot in advance.</div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost estimate">$60–$100</span>
+      <span class="booking-tag tag-pending">To Book</span>
+    </div>
+  </div>
+
+  <div class="booking-item status-pending" id="bk-bikes-ams">
+        <div class="booking-info">
+      <div class="booking-name">Bike Rental — Amsterdam</div>
+      <div class="booking-meta">Saturday, Oct 3 · Pickup 9:30 AM</div>
+      <div class="booking-params">📋 Many rental shops in Jordaan area. Walk-in fine — no advance booking needed.</div>
+    </div>
+    <div class="booking-right">
+      <span class="booking-cost estimate">$30–$60</span>
+      <span class="booking-tag tag-pending">To Book</span>
+    </div>
+  </div>
+
+  <div class="cost-confirmed-bar">
+    <span class="cost-confirmed-lbl">✓ Confirmed so far (excl. miles)</span>
+    <span class="cost-confirmed-amt">$2,092.27 + 120k miles</span>
+  </div>
+  <div class="cost-total-bar">
+    <span class="cost-total-lbl">Full Trip Estimate (2 people)</span>
+    <span class="cost-total-amt">$5,080–$9,480</span>
+  </div>
+  <p class="cost-disc">* Check a box when something is booked. Confirmed items show in green. Estimates update as you lock in real prices.</p>
+
+</div><!-- end costs -->
+
+<!-- ═══════════════════ PACKING ═══════════════════ -->
+<!-- Uses <details>/<summary> instead of CSS checkboxes to avoid cross-panel selector bleed -->
+<div class="tab-panel" id="panel-packing">
+
+  <div class="principle-banner">🧳 Organised into <strong>Shared</strong> (pack &amp; verify together — one of each) and <strong>Zach</strong> / <strong>Madi</strong> (each person's own). Checkboxes save automatically when this page is opened from a web link.</div>
+
+  <!-- ─────────── SHARED ─────────── -->
+  <div class="packing-group-header" style="color:#1A4731;">🤝 Shared — Pack Together</div>
+
+  <div class="packing-section">
+    <details open>
+      <summary class="packing-section-header"><span class="packing-section-title">🧴 Toiletries (shared kit)</span><span class="summary-arrow">▸</span></summary>
+      <div class="pack-body">
+        <div class="pack-note">💡 All liquids ≤100ml. Split across both quart bags at security if needed.</div>
+        <div class="pack-item"><input type="checkbox" id="sh1" data-key="pk-sh1"><label for="sh1">Shampoo + conditioner (travel size or solid bars)</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh2" data-key="pk-sh2"><label for="sh2">Body wash / soap</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh3" data-key="pk-sh3"><label for="sh3">Toothpaste</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh4" data-key="pk-sh4"><label for="sh4">Facial cleanser + moisturizer</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh5" data-key="pk-sh5"><label for="sh5">SPF moisturizer / sunscreen</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh6" data-key="pk-sh6"><label for="sh6">Nail file / clippers</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh7" data-key="pk-sh7"><label for="sh7">Lip balm</label></div>
+      </div>
+    </details>
+  </div>
+
+  <div class="packing-section">
+    <details>
+      <summary class="packing-section-header"><span class="packing-section-title">💊 Health + First Aid (shared)</span><span class="summary-arrow">▸</span></summary>
+      <div class="pack-body">
+        <div class="pack-item"><input type="checkbox" id="sh8" data-key="pk-sh8"><label for="sh8">Pain reliever (ibuprofen or paracetamol)</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh9" data-key="pk-sh9"><label for="sh9">Antihistamines</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh10" data-key="pk-sh10"><label for="sh10">Antidiarrheal / stomach remedy</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh11" data-key="pk-sh11"><label for="sh11">Motion sickness tablets</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh12" data-key="pk-sh12"><label for="sh12">Blister plasters / moleskin (essential for cobblestones)</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh13" data-key="pk-sh13"><label for="sh13">Travel first aid: bandaids, antiseptic wipes</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh14" data-key="pk-sh14"><label for="sh14">Hand sanitizer</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh15" data-key="pk-sh15"><label for="sh15">Jet lag aids (melatonin, sleep masks, ear plugs)</label></div>
+      </div>
+    </details>
+  </div>
+
+  <div class="packing-section">
+    <details>
+      <summary class="packing-section-header"><span class="packing-section-title">🎒 Luggage + Tech (shared)</span><span class="summary-arrow">▸</span></summary>
+      <div class="pack-body">
+        <div class="pack-note">💡 Boots on feet = biggest space saver. Vacuum bags do the heavy lifting.</div>
+        <div class="pack-item"><input type="checkbox" id="sh16" data-key="pk-sh16"><label for="sh16">Vacuum compression pump + compression bags</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh17" data-key="pk-sh17"><label for="sh17">Packing cubes for organisation around vacuum bags</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh18" data-key="pk-sh18"><label for="sh18">Shoe bags for inside main luggage</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh19" data-key="pk-sh19"><label for="sh19">Travel adapters — Type G (Ireland/Scotland) + Type C (Netherlands)</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh20" data-key="pk-sh20"><label for="sh20">Charger cables (shared pile)</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh21" data-key="pk-sh21"><label for="sh21">Portable power bank</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh22" data-key="pk-sh22"><label for="sh22">Camera (optional)</label></div>
+      </div>
+    </details>
+  </div>
+
+  <div class="packing-section">
+    <details>
+      <summary class="packing-section-header"><span class="packing-section-title">📄 Documents (shared)</span><span class="summary-arrow">▸</span></summary>
+      <div class="pack-body">
+        <div class="pack-item"><input type="checkbox" id="sh23" data-key="pk-sh23"><label for="sh23">Both passports (check expiry — valid 6+ months beyond Oct 7)</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh24" data-key="pk-sh24"><label for="sh24">Travel insurance documents (print + digital)</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh25" data-key="pk-sh25"><label for="sh25">Printed backup of key reservations</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh26" data-key="pk-sh26"><label for="sh26">Copies of both passports stored separately from originals</label></div>
+      </div>
+    </details>
+  </div>
+
+  <div class="packing-section">
+    <details>
+      <summary class="packing-section-header"><span class="packing-section-title">💰 Money + Admin (shared)</span><span class="summary-arrow">▸</span></summary>
+      <div class="pack-body">
+        <div class="pack-item"><input type="checkbox" id="sh27" data-key="pk-sh27"><label for="sh27">Notify banks/credit cards of travel dates</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh28" data-key="pk-sh28"><label for="sh28">No-foreign-fee credit card (Chase Sapphire, Schwab, Wise, etc.)</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh29" data-key="pk-sh29"><label for="sh29">€100–€150 cash for Amsterdam</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh30" data-key="pk-sh30"><label for="sh30">£50–£100 cash for Edinburgh</label></div>
+        <div class="pack-item"><input type="checkbox" id="sh31" data-key="pk-sh31"><label for="sh31">€50–€100 cash for Dublin (Ireland uses euro, not pound)</label></div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ─────────── ZACH ─────────── -->
+  <div class="packing-group-header" style="color:#2D5016;">🧍 Zach — Own Bag</div>
+
+  <div class="packing-section">
+    <details>
+      <summary class="packing-section-header"><span class="packing-section-title">👕 Zach — Clothing</span><span class="summary-arrow">▸</span></summary>
+      <div class="pack-body">
+        <div class="pack-note">💡 1 carry-on + 1 personal item. Boots worn on travel days (not packed).</div>
+        <div class="pack-item"><input type="checkbox" id="z1" data-key="pk-z1"><label for="z1">3–4 long-sleeve shirts / light tops (casual + slightly smart)</label></div>
+        <div class="pack-item"><input type="checkbox" id="z2" data-key="pk-z2"><label for="z2">1–2 crewneck or pullover sweaters</label></div>
+        <div class="pack-item"><input type="checkbox" id="z3" data-key="pk-z3"><label for="z3">1 mid-layer fleece or light down jacket</label></div>
+        <div class="pack-item"><input type="checkbox" id="z4" data-key="pk-z4"><label for="z4">1 waterproof outer shell / rain jacket</label></div>
+        <div class="pack-item"><input type="checkbox" id="z5" data-key="pk-z5"><label for="z5">2 pairs of travel trousers / jeans</label></div>
+        <div class="pack-item"><input type="checkbox" id="z6" data-key="pk-z6"><label for="z6">1 pair of comfortable walking shoes / trainers</label></div>
+        <div class="pack-item"><input type="checkbox" id="z7" data-key="pk-z7"><label for="z7">4–5 pairs of socks (wool blend)</label></div>
+        <div class="pack-item"><input type="checkbox" id="z8" data-key="pk-z8"><label for="z8">4–5 pairs of underwear</label></div>
+        <div class="pack-item"><input type="checkbox" id="z9" data-key="pk-z9"><label for="z9">1 set of sleep clothes / lounge wear</label></div>
+        <div class="pack-item"><input type="checkbox" id="z10" data-key="pk-z10"><label for="z10">1 nicer outfit for the special dinner</label></div>
+        <div class="pack-item"><input type="checkbox" id="z11" data-key="pk-z11"><label for="z11">1 hat / beanie</label></div>
+        <div class="pack-item"><input type="checkbox" id="z12" data-key="pk-z12"><label for="z12">Light gloves (optional)</label></div>
+      </div>
+    </details>
+  </div>
+
+  <div class="packing-section">
+    <details>
+      <summary class="packing-section-header"><span class="packing-section-title">🎒 Zach — Personal Items</span><span class="summary-arrow">▸</span></summary>
+      <div class="pack-body">
+        <div class="pack-item"><input type="checkbox" id="z13" data-key="pk-z13"><label for="z13">Prescription medications (carry-on only, never checked)</label></div>
+        <div class="pack-item"><input type="checkbox" id="z14" data-key="pk-z14"><label for="z14">Toothbrush</label></div>
+        <div class="pack-item"><input type="checkbox" id="z15" data-key="pk-z15"><label for="z15">Deodorant</label></div>
+        <div class="pack-item"><input type="checkbox" id="z16" data-key="pk-z16"><label for="z16">Razor + spare blades</label></div>
+        <div class="pack-item"><input type="checkbox" id="z17" data-key="pk-z17"><label for="z17">Phone + personal charger</label></div>
+        <div class="pack-item"><input type="checkbox" id="z18" data-key="pk-z18"><label for="z18">Earbuds / headphones</label></div>
+        <div class="pack-item"><input type="checkbox" id="z19" data-key="pk-z19"><label for="z19">Day backpack (doubles as personal item on flights)</label></div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ─────────── MADI ─────────── -->
+  <div class="packing-group-header" style="color:#5C1A0A;">🧍‍♀️ Madi — Own Bag</div>
+
+  <div class="packing-section">
+    <details>
+      <summary class="packing-section-header"><span class="packing-section-title">👗 Madi — Clothing</span><span class="summary-arrow">▸</span></summary>
+      <div class="pack-body">
+        <div class="pack-note">💡 1 carry-on + 1 personal item. Boots worn on travel days (not packed).</div>
+        <div class="pack-item"><input type="checkbox" id="ma1" data-key="pk-ma1"><label for="ma1">3–4 long-sleeve shirts / light tops (casual + slightly smart)</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma2" data-key="pk-ma2"><label for="ma2">1–2 crewneck or pullover sweaters</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma3" data-key="pk-ma3"><label for="ma3">1 mid-layer fleece or light down jacket</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma4" data-key="pk-ma4"><label for="ma4">1 waterproof outer shell / rain jacket</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma5" data-key="pk-ma5"><label for="ma5">2 pairs of travel trousers / jeans</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma6" data-key="pk-ma6"><label for="ma6">1 pair of comfortable walking shoes / trainers</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma7" data-key="pk-ma7"><label for="ma7">4–5 pairs of socks (wool blend)</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma8" data-key="pk-ma8"><label for="ma8">4–5 pairs of underwear</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma9" data-key="pk-ma9"><label for="ma9">1 set of sleep clothes / lounge wear</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma10" data-key="pk-ma10"><label for="ma10">1 nicer outfit for the special dinner</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma11" data-key="pk-ma11"><label for="ma11">1 hat / beanie</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma12" data-key="pk-ma12"><label for="ma12">Light gloves (optional)</label></div>
+      </div>
+    </details>
+  </div>
+
+  <div class="packing-section">
+    <details>
+      <summary class="packing-section-header"><span class="packing-section-title">🎒 Madi — Personal Items</span><span class="summary-arrow">▸</span></summary>
+      <div class="pack-body">
+        <div class="pack-item"><input type="checkbox" id="ma13" data-key="pk-ma13"><label for="ma13">Prescription medications (carry-on only, never checked)</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma14" data-key="pk-ma14"><label for="ma14">Toothbrush</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma15" data-key="pk-ma15"><label for="ma15">Deodorant</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma16" data-key="pk-ma16"><label for="ma16">Razor + spare blades</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma17" data-key="pk-ma17"><label for="ma17">Feminine hygiene products as needed</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma18" data-key="pk-ma18"><label for="ma18">Hair ties / bobby pins</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma19" data-key="pk-ma19"><label for="ma19">Phone + personal charger</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma20" data-key="pk-ma20"><label for="ma20">Earbuds / headphones</label></div>
+        <div class="pack-item"><input type="checkbox" id="ma21" data-key="pk-ma21"><label for="ma21">Day backpack (doubles as personal item on flights)</label></div>
+      </div>
+    </details>
+  </div>
+
+</div><!-- end packing -->
+
+  </div><!-- end .content -->
+</div><!-- end .tab-shell -->
+
+
+
+<script>
+// Persist packing checkboxes via localStorage (works when opened from a web link in a browser).
+// Tabs remain pure-CSS and work even if this script is stripped (e.g. email previews).
+(function () {
+  try {
+    var boxes = document.querySelectorAll('input[type="checkbox"][data-key]');
+    boxes.forEach(function (box) {
+      var key = 'mz-' + box.getAttribute('data-key');
+      if (localStorage.getItem(key) === '1') box.checked = true;
+      box.addEventListener('change', function () {
+        try {
+          if (box.checked) localStorage.setItem(key, '1');
+          else localStorage.removeItem(key);
+        } catch (e) {}
+      });
+    });
+  } catch (e) {
+    // localStorage unavailable (e.g. private mode or email viewer) — checkboxes still work, just won't persist.
+  }
+})();
+</script>
+</body>
+</html>
